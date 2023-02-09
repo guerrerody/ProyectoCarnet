@@ -3,7 +3,7 @@
 using namespace std;
 
 
-#include "cola.h"
+#include "Cola.h"
 
 template <class Tipo>
 Cola<Tipo>::Cola()

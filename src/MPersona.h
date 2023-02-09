@@ -14,6 +14,7 @@ using namespace std;
 
 #include "Nodo.cpp"
 #include "Cola.cpp"
+#include "MEstado.h"
 
 struct InfoPersona {
 	int codigo;
@@ -24,7 +25,7 @@ struct InfoPersona {
 	int tipoPersona; // [Estudiante, Docente, Obrero, Administrativo]
 	string correo;
 	string decanato;
-	string pilaEstatus; // [Entregado, Verificado]
+	MEstado pilaEstado; // [Entregado, Verificado]
 
 	InfoPersona() :
 		codigo(0), sexo(0), tipoPersona(0) { // Inicializacion de los valores numericos para el struct
@@ -37,7 +38,8 @@ public:
 	MPersona();
 	~MPersona();
 
-	bool IncluirRol(InfoPersona persona);
+	Nodo<InfoPersona>* ObtFrente();
+	bool IncluirPersona(InfoPersona persona);
 	Nodo<InfoPersona>* BuscarPersona(string cedulaPersona);
 	bool ModificarPersona(InfoPersona rol);
 	bool EliminarPersona(string cedulaPersona);

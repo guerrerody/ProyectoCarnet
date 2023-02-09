@@ -38,7 +38,7 @@ bool MRol::ModificarRol(InfoRol rol) {
 	return false;
 }
 
-bool MRol::eliminarRol(int codigoRol, InfoRol &rol) {
+bool MRol::EliminarRol(int codigoRol, InfoRol &rol) {
 	Nodo<InfoRol> *p = ObtPrimero();
 	Nodo<InfoRol> *pAnt = NULL;
 
