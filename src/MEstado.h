@@ -31,7 +31,7 @@ public:
 	MEstado();
 	~MEstado();
 
-	Nodo<InfoEstado>* MEstado::ObtTope();
+	Nodo<InfoEstado>* ObtTope();
 	bool IncluirEstado(InfoEstado estado);
 	Nodo<InfoEstado>* BuscarEstado(int codigo);
 	bool ModificarEstado(InfoEstado rol);

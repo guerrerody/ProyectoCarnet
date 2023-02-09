@@ -313,7 +313,8 @@ void Controlador::imprimirPersonas(){
 	Nodo<InfoRol>* rol = mr.BuscarRol(codigo);
 
 	if(rol != NULL){
-		vp.imprimirListaPersonas(rol->ObtInfo().cPersonas);
+		MPersona personas = rol->ObtInfo().cPersonas;
+		vp.imprimirListaPersonas(personas);
 	} else {
 		vp.ImprimirMensaje("EL ROL NO EXISTE\n\n");
 	}
@@ -503,7 +504,8 @@ void Controlador::imprimirEstados(){
 	}
 
 	if(ptrPersona != NULL){
-		ve.imprimirListaEstados(ptrPersona->ObtInfo().pilaEstado);
+		MEstado estados = ptrPersona->ObtInfo().pilaEstado;
+		ve.imprimirListaEstados(estados);
 	} else {
 		ve.ImprimirMensaje("LA PERSONA NO EXISTE\n\n");
 	}

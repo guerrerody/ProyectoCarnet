@@ -7,6 +7,8 @@ template <class Tipo>
 
 class Pila
 {
+protected:
+
     Nodo<Tipo> *tope;
 
 public:
