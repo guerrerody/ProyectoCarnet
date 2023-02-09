@@ -37,8 +37,7 @@ Pila<Tipo>::~Pila()
         p = tope->ObtDer();
         delete tope;
         tope = p;
-    };
-    final = NULL;
+    }
 };
 
 template <class Tipo>
