@@ -52,7 +52,7 @@ void VPersona::imprimirListaPersonas(MPersona &persona){ // HAY QUE ESCOGER LA L
 
 			ImprimirLineasBlanco(2);
 
-			Nodo<InfoPersona> *p = persona.ObtPrimero(); // HAY QUE APLICAR LA MARCA
+			Nodo<InfoPersona> *p = persona.ObtFrente(); // HAY QUE APLICAR LA MARCA
 			while (p != NULL) {
 				InfoPersona info = p->ObtInfo();
 
@@ -63,7 +63,7 @@ void VPersona::imprimirListaPersonas(MPersona &persona){ // HAY QUE ESCOGER LA L
 				ImprimirNroJustificado(info.tipoPersona, 8);
 				ImprimirStringJustificado(info.correo, 20);
 				ImprimirStringJustificado(info.decanato, 20);
-				ImprimirStringJustificado(info.pilaEstatus, 20);
+				ImprimirStringJustificado(info.pilaEstado.ObtTope()->ObtInfo().nombre, 20);
 				ImprimirLineasBlanco(1);
 
 				p = p->ObtDer();
@@ -95,7 +95,7 @@ void VPersona::imprimirPersona(InfoPersona infoPersona){
 		ImprimirLineasBlanco(2);
 		ImprimirString("DECANATO: ", infoPersona.decanato);
 		ImprimirLineasBlanco(2);
-		ImprimirString("ESTATUS DE LA PILA: ", infoPersona.pilaEstatus);
+		ImprimirString("ESTATUS DE LA PILA: ", infoPersona.pilaEstado.ObtTope()->ObtInfo().nombre);
 		ImprimirLineasBlanco(2);
 
 		Pausa();
