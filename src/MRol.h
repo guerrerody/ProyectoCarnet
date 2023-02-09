@@ -13,11 +13,11 @@ using namespace std;
 
 #include "Nodo.cpp"
 #include "Lista.cpp"
-#include "MPersona.cpp"
+#include "MPersona.h"
 
 
 struct InfoRol {
-	Nodo<InfoPersona> *pPersonas;
+	MPersona cPersonas;
 
 	int codigo;
 	string nombre;
@@ -26,7 +26,7 @@ struct InfoRol {
 	int cantCensados;
 
 	InfoRol() :
-		pPersonas(NULL), codigo(0), precioCarnet(0.00), cantCensados(0) { // Inicializacion de los valores numericos para el struct
+		codigo(0), precioCarnet(0.00), cantCensados(0) { // Inicializacion de los valores numericos para el struct
 	}
 };
 
@@ -39,7 +39,7 @@ public:
 	bool IncluirRol(InfoRol rol);
 	Nodo<InfoRol>* BuscarRol(int codigoRol);
 	bool ModificarRol(InfoRol rol);
-	bool eliminarRol(int codigoRol, InfoRol &rol);
+	bool EliminarRol(int codigoRol, InfoRol &rol);
 };
 
 #endif /* MROL_H_ */

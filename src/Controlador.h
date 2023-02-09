@@ -11,6 +11,8 @@
 #include "VRol.h"
 #include "MPersona.h"
 #include "VPersona.h"
+#include "MEstado.h"
+#include "VEstado.h"
 
 class Controlador {
 private:
@@ -18,6 +20,8 @@ private:
 	VRol vr;
 	MPersona mp;
 	VPersona vp;
+	MEstado me;
+	VEstado ve;
 
 public:
 	Controlador();
@@ -38,6 +42,13 @@ public:
 	void eliminarPersona();
 	void imprimirPersonas();
 
+	// Estados
+	void gestionEstados();
+	void incluirEstado();
+	void consultarEstado();
+	void modificarEstado();
+	void eliminarEstado();
+	void imprimirEstados();
 };
 
 #endif /* CONTROLADOR_H_ */

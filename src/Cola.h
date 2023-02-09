@@ -8,6 +8,7 @@ template <class Tipo>
 
 class Cola
 {
+private:
     Nodo<Tipo> *frente, *final;
 
 public:
