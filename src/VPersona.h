@@ -21,6 +21,4 @@ public:
 	void imprimirPersona(InfoPersona infoPersona); //Imprimir los datos del nodo
 };
 
-
-
 #endif /* VPERSONA_H_ */

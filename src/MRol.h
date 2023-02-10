@@ -11,8 +11,8 @@
 #include <string>
 using namespace std;
 
-#include "Nodo.cpp"
-#include "Lista.cpp"
+#include "Nodo.h"
+#include "Lista.h"
 #include "MPersona.h"
 
 

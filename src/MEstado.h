@@ -12,8 +12,8 @@
 #include <string>
 using namespace std;
 
-#include "Nodo.cpp"
-#include "Pila.cpp"
+#include "Nodo.h"
+#include "Pila.h"
 
 struct InfoEstado {
 	int codigo;

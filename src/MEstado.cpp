@@ -15,13 +15,12 @@ MEstado::~MEstado() {
 
 }
 
-
 bool MEstado::IncluirEstado(InfoEstado estado) {
 	return Insertar(estado);
 
 }
 
-Nodo<InfoEstado>* MEstado::ObtTope(){
+Nodo<InfoEstado>* MEstado::ObtTope() {
 	return tope;
 }
 
@@ -41,7 +40,7 @@ Nodo<InfoEstado>* MEstado::BuscarEstado(int codigo) {
 		if (p->ObtInfo().codigo == codigo) {
 			valor = p;
 			encontro = true;
-			while(!estAux.Vacia()){
+			while (!estAux.Vacia()) {
 				InfoEstado e;
 				estAux.Remover(e);
 				Insertar(e);
@@ -52,14 +51,14 @@ Nodo<InfoEstado>* MEstado::BuscarEstado(int codigo) {
 
 			estAux.Insertar(q);
 
-			if(tope == NULL){
+			if (tope == NULL) {
 				encontro = true;
-				while(!estAux.Vacia()){
+				while (!estAux.Vacia()) {
 					InfoEstado e;
 					estAux.Remover(e);
 					Insertar(e);
 				}
-			}else{
+			} else {
 				p = tope;
 			}
 		}
@@ -76,21 +75,22 @@ bool MEstado::ModificarEstado(InfoEstado estado) {
 	if (p != NULL) {
 		p->AsigInfo(estado);
 		return true;
-	} else return false;
+	} else
+		return false;
 
 	/*if (p != NULL) {
-		while(tope != NULL){
-			estAux.Insertar(tope->ObtInfo());
-			Remover(u);
-		}
-		while(!estAux.Vacia()){
-			estAux.Remover(u);
-			if(u.codigo == p->ObtInfo().codigo){
-				Insertar(estado);
-			}
-		}
-		return true;
-	} else return false;*/
+	 while(tope != NULL){
+	 estAux.Insertar(tope->ObtInfo());
+	 Remover(u);
+	 }
+	 while(!estAux.Vacia()){
+	 estAux.Remover(u);
+	 if(u.codigo == p->ObtInfo().codigo){
+	 Insertar(estado);
+	 }
+	 }
+	 return true;
+	 } else return false;*/
 }
 
 bool MEstado::EliminarEstado(int codigo) {
@@ -99,16 +99,17 @@ bool MEstado::EliminarEstado(int codigo) {
 	InfoEstado u;
 
 	if (p != NULL) {
-		while(tope != NULL){
+		while (tope != NULL) {
 			estAux.Insertar(tope->ObtInfo());
 			Remover(u);
 		}
-		while(!estAux.Vacia()){
+		while (!estAux.Vacia()) {
 			estAux.Remover(u);
-			if(u.codigo != p->ObtInfo().codigo){
+			if (u.codigo != p->ObtInfo().codigo) {
 				Insertar(u);
 			}
 		}
 		return true;
-	} else return false;
+	} else
+		return false;
 }

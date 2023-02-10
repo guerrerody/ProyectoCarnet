@@ -30,7 +30,7 @@ int VPersona::menuPersona(){
 		return LeerValidarNro("  SELECCIONE SU OPCION : ", 1, 6);
 
 }
-void VPersona::imprimirListaPersonas(MPersona &persona){ // HAY QUE ESCOGER LA LISTA DE PERSONAS DEPENDE DEL ROL
+void VPersona::imprimirListaPersonas(MPersona &persona){ //
 	Limpiar();
 
 		ImprimirEncabezado("\n      LISTADO DE PERSONAS", "   ======================");
@@ -52,7 +52,7 @@ void VPersona::imprimirListaPersonas(MPersona &persona){ // HAY QUE ESCOGER LA L
 
 			ImprimirLineasBlanco(2);
 
-			Nodo<InfoPersona> *p = persona.ObtFrente(); // HAY QUE APLICAR LA MARCA
+			Nodo<InfoPersona> *p = persona.ObtFrente();
 			while (p != NULL) {
 				InfoPersona info = p->ObtInfo();
 

@@ -21,6 +21,4 @@ public:
 	void imprimirEstado(InfoEstado infoEstado); //Imprimir los datos del nodo
 };
 
-
-
 #endif /* VEstado_H_ */

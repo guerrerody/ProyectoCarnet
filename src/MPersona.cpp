@@ -15,7 +15,7 @@ MPersona::~MPersona() {
 
 }
 
-Nodo<InfoPersona>* MPersona::ObtFrente(){
+Nodo<InfoPersona>* MPersona::ObtFrente() {
 	return frente;
 }
 
@@ -36,36 +36,36 @@ Nodo<InfoPersona>* MPersona::BuscarPersona(string cedulaPersona) {
 		return valor;
 	}
 
-	do{
-		if(frente->ObtInfo().cedula == cedulaPersona){
+	do {
+		if (frente->ObtInfo().cedula == cedulaPersona) {
 			valor = frente;
 		}
 		Insertar(frente->ObtInfo());
 		Remover(q);
 
-	} while(marca->ObtInfo().cedula != frente->ObtInfo().cedula);
+	} while (marca->ObtInfo().cedula != frente->ObtInfo().cedula);
 
 	/*while (!(encontro)) {
-		if (p->ObtInfo().cedula == cedulaPersona) {
-			valor = p;
-			encontro = true;
-			while(marca->ObtInfo().cedula != final->ObtInfo().cedula){
-				Insertar(p->ObtInfo());
-				p = frente;
-			}
-		} else {
-			Insertar(p->ObtInfo());
-			if(marca == p)
-				while(marca->ObtInfo().cedula != final->ObtInfo().cedula){
-					Insertar(p->ObtInfo());
-					p = frente;
-				}
-				encontro = true;
-			else
-				Remover(q);	
-				p = frente;
-		}
-	}*/
+	 if (p->ObtInfo().cedula == cedulaPersona) {
+	 valor = p;
+	 encontro = true;
+	 while(marca->ObtInfo().cedula != final->ObtInfo().cedula){
+	 Insertar(p->ObtInfo());
+	 p = frente;
+	 }
+	 } else {
+	 Insertar(p->ObtInfo());
+	 if(marca == p)
+	 while(marca->ObtInfo().cedula != final->ObtInfo().cedula){
+	 Insertar(p->ObtInfo());
+	 p = frente;
+	 }
+	 encontro = true;
+	 else
+	 Remover(q);
+	 p = frente;
+	 }
+	 }*/
 
 	return valor;
 }
@@ -86,16 +86,17 @@ bool MPersona::EliminarPersona(string cedulaPersona) {
 	InfoPersona q;
 	marca = frente;
 	if (p != NULL) {
-		do{
-			if(frente->ObtInfo().cedula != cedulaPersona){
+		do {
+			if (frente->ObtInfo().cedula != cedulaPersona) {
 				Insertar(frente->ObtInfo());
 				Remover(q);
 			} else {
 				Insertar(frente->ObtDer()->ObtInfo());
 				Remover(q);
 			}
-		} while(marca->ObtInfo().cedula != frente->ObtInfo().cedula);
+		} while (marca->ObtInfo().cedula != frente->ObtInfo().cedula);
 
 		return true;
-	} else return false;
+	} else
+		return false;
 }

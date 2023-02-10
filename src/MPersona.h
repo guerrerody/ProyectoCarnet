@@ -12,8 +12,8 @@
 #include <string>
 using namespace std;
 
-#include "Nodo.cpp"
-#include "Cola.cpp"
+#include "Nodo.h"
+#include "Cola.h"
 #include "MEstado.h"
 
 struct InfoPersona {
@@ -41,7 +41,7 @@ public:
 	Nodo<InfoPersona>* ObtFrente();
 	bool IncluirPersona(InfoPersona persona);
 	Nodo<InfoPersona>* BuscarPersona(string cedulaPersona);
-	bool ModificarPersona(InfoPersona rol);
+	bool ModificarPersona(InfoPersona persona);
 	bool EliminarPersona(string cedulaPersona);
 
 };
