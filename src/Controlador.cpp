@@ -197,25 +197,20 @@ void Controlador::incluirPersona() {
 }
 
 void Controlador::consultarPersona() {
-	InfoPersona persona;
-	Nodo<InfoPersona> *ptrPersona;
+	Nodo<InfoPersona> *ptrPersona = NULL;
 
 	vp.Limpiar();
 	vp.ImprimirEncabezado("      CONSULTAR PERSONA", "   ================");
 	vp.ImprimirLineasBlanco(1);
 
-	persona.cedula = vp.LeerString("Cédula: ");
+	string cedula = vp.LeerString("Cédula: ");
+	InfoPersona personaBuscar;
 
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(persona.cedula);
-		if (ptrPersona == NULL)
-			rol = rol->ObtDer();
-		else {
-			rol = NULL;
-		};
+		rol = (rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar) == NULL) ? rol->ObtDer() : NULL;
 	}
-	if (ptrPersona == NULL) {
+	if (personaBuscar.cedula == NULL) {
 		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
 		vp.ImprimirLineasBlanco(1);
 		vr.Pausa();

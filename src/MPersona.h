@@ -28,7 +28,7 @@ struct InfoPersona {
 	MEstado pilaEstado; // [Entregado, Verificado]
 
 	InfoPersona() :
-		codigo(0), sexo(0), tipoPersona(0) { // Inicializacion de los valores numericos para el struct
+		codigo(0), cedula(NULL), sexo(0), tipoPersona(0) { // Inicializacion de los valores numericos para el struct
 	}
 };
 
@@ -40,7 +40,7 @@ public:
 
 	Nodo<InfoPersona>* ObtFrente();
 	bool IncluirPersona(InfoPersona persona);
-	Nodo<InfoPersona>* BuscarPersona(string cedulaPersona);
+	bool BuscarPersona(string cedulaPersona, InfoPersona &persona);
 	bool ModificarPersona(InfoPersona persona);
 	bool EliminarPersona(string cedulaPersona);
 

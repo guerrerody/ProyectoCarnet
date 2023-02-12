@@ -17,7 +17,7 @@ int main() {
 		vg.ImprimirMensaje("[2] GESTIÓN DE PERSONAS\n");
 		vg.ImprimirMensaje("[3] GESTIÓN DE ESTADO\n");
 		vg.ImprimirMensaje("[4] FINALIZAR\n\n");
-		opc = vg.LeerValidarNro("  SELECCIONE SU OPCION : ", 1, 3);
+		opc = vg.LeerValidarNro("  SELECCIONE SU OPCION : ", 1, 4);
 		switch (opc) {
 		case 1:
 			c.gestionRoles();
@@ -25,9 +25,9 @@ int main() {
 		case 2:
 			c.gestionPersonas();
 			break;
-		/*case 3:
-			c.gestionEstado();
-			break;*/
+		case 3:
+			//c.gestionEstado();
+			break;
 		}
 	} while (opc != 4);
 	return 0;
