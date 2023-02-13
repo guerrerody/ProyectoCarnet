@@ -17,7 +17,6 @@ using namespace std;
 #include "MEstado.h"
 
 struct InfoPersona {
-	int codigo;
 	string cedula;
 	string nombre;
 	string apellido;
@@ -28,7 +27,7 @@ struct InfoPersona {
 	MEstado pilaEstado; // [Entregado, Verificado]
 
 	InfoPersona() :
-		codigo(0), cedula(NULL), sexo(0), tipoPersona(0) { // Inicializacion de los valores numericos para el struct
+		cedula(""), sexo(0), tipoPersona(0) { // Inicializacion de los valores numericos para el struct
 	}
 };
 

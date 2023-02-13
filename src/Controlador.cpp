@@ -160,17 +160,16 @@ void Controlador::gestionPersonas() {
 }
 
 void Controlador::incluirPersona() {
-	InfoPersona persona;
+	InfoPersona persona, per;
 
 	vp.Limpiar();
 	vp.ImprimirEncabezado("      INCLUIR PERSONA", "   ================");
 	vp.ImprimirLineasBlanco(1);
 
 	persona.cedula = vp.LeerString("Cédula: ");
-	if (mp.BuscarPersona(persona.cedula) != NULL) {
+	if (mp.BuscarPersona(persona.cedula, per) != false) {
 		vp.ImprimirMensaje("LA PERSONA YA EXISTE\n\n");
 	} else {
-		persona.codigo = vp.LeerNroDecimal("Código: ");
 		persona.nombre = vp.LeerString("Nombre: ");
 		persona.apellido = vp.LeerString("Apellido: ");
 		persona.sexo = vp.LeerNroDecimal("Sexo (1)MASCULINO (2)FEMENINO: ");
@@ -197,7 +196,6 @@ void Controlador::incluirPersona() {
 }
 
 void Controlador::consultarPersona() {
-	Nodo<InfoPersona> *ptrPersona = NULL;
 
 	vp.Limpiar();
 	vp.ImprimirEncabezado("      CONSULTAR PERSONA", "   ================");
@@ -208,46 +206,40 @@ void Controlador::consultarPersona() {
 
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		rol = (rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar) == NULL) ? rol->ObtDer() : NULL;
+		rol = (rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar) == false) ? rol->ObtDer() : NULL;
 	}
-	if (personaBuscar.cedula == NULL) {
+	if (personaBuscar.cedula == "") {
 		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
 		vp.ImprimirLineasBlanco(1);
 		vr.Pausa();
 	} else {
-		vp.imprimirPersona(ptrPersona->ObtInfo());
+		vp.imprimirPersona(personaBuscar);
 	}
 }
 
 void Controlador::modificarPersona() {
-	InfoPersona persona;
-	Nodo<InfoPersona> *ptrPersona;
+	InfoPersona persona, personaBuscar;
 
 	vp.Limpiar();
 	vp.ImprimirEncabezado("      MODIFICAR PERSONA", "   ================");
 	vp.ImprimirLineasBlanco(1);
 
 	persona.cedula = vp.LeerString("Cédula: ");
+
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(persona.cedula);
-		if (ptrPersona == NULL)
-			rol = rol->ObtDer();
-		else {
-			rol = NULL;
-		};
+		rol = (rol->ObtInfo().cPersonas.BuscarPersona(persona.cedula, personaBuscar) == false) ? rol->ObtDer() : NULL;
 	}
 
-	if (ptrPersona == NULL) {
+	if (personaBuscar.cedula == "") {
 		vp.ImprimirMensaje("LA PERSONA NO EXISTE\n\n");
 	} else {
 		vp.ImprimirMensaje("PERSONA ENCONTRADA\n\n");
 		vp.ImprimirMensaje("DATOS DE PERSONA\n\n");
-		vp.imprimirPersona(ptrPersona->ObtInfo());
+		vp.imprimirPersona(personaBuscar);
 		vp.ImprimirLineasBlanco(1);
 		vp.ImprimirMensaje("INGRESE DATOS A MODIFICAR\n\n");
 
-		persona.codigo = vp.LeerNroDecimal("Código: ");
 		persona.nombre = vp.LeerString("Nombre: ");
 		persona.apellido = vp.LeerString("Apellido: ");
 		persona.sexo = vp.LeerNroDecimal("Sexo (1)MASCULINO (2)FEMENINO: ");
@@ -274,30 +266,26 @@ void Controlador::modificarPersona() {
 void Controlador::eliminarPersona() {
 	int dec;
 	string cedula;
-	Nodo<InfoPersona> *ptrPersona;
+	InfoPersona personaBuscar;
 
 	vp.Limpiar();
 	vp.ImprimirEncabezado("      ELIMINAR PERSONA", "   ================");
 	vp.ImprimirLineasBlanco(1);
 
 	cedula = vp.LeerString("Cédula: ");
+
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(cedula);
-		if (ptrPersona == NULL)
-			rol = rol->ObtDer();
-		else {
-			rol = NULL;
-		};
+		rol = (rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar) == false) ? rol->ObtDer() : NULL;
 	}
 
-	if (ptrPersona == NULL) {
+	if (personaBuscar.cedula == "") {
 		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
 		vp.ImprimirLineasBlanco(1);
 		vr.Pausa();
 	} else {
 		vp.ImprimirMensaje("PERSONA ENCONTRADA\n\n");
-		vp.imprimirPersona(ptrPersona->ObtInfo());
+		vp.imprimirPersona(personaBuscar);
 		dec = vp.LeerNroDecimal("Desea eliminar persona? (1)SI (2)NO: ");
 		if (dec == 1) {
 			rol->ObtInfo().cPersonas.EliminarPersona(cedula);
@@ -346,33 +334,35 @@ void Controlador::gestionEstados() {
 void Controlador::incluirEstado() {
 	InfoEstado estado;
 	string cedula;
-	Nodo<InfoPersona> *ptrPersona;
+	InfoPersona personaBuscar;
 
 	ve.Limpiar();
 	ve.ImprimirEncabezado("      INCLUIR ESTADO", "   ================");
 	ve.ImprimirLineasBlanco(1);
 
 	cedula = ve.LeerString("Cédula de persona: ");
+
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(cedula);
-		if (ptrPersona == NULL)
+		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
+		if(resp == false){
 			rol = rol->ObtDer();
-		else {
+		} else {
 			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
 			rol = NULL;
-		};
+		}
 	}
 
 	estado.codigo = ve.LeerNroDecimal("Código: ");
-	if (ptrPersona->ObtInfo().pilaEstado.BuscarEstado(estado.codigo) != NULL) {
+	if (personaBuscar.pilaEstado.BuscarEstado(estado.codigo) != NULL) {
 		ve.ImprimirMensaje("EL ESTADO YA EXISTE\n\n");
 	} else {
 		ve.ImprimirMensaje("INGRESAR DATOS DE ESTADO\n\n");
 		estado.nombre = ve.LeerString("Nombre: ");
 		estado.fecha = ve.LeerString("Fecha: ");
 
-		ptrPersona->ObtInfo().pilaEstado.IncluirEstado(estado);
+		personaBuscar.pilaEstado.IncluirEstado(estado);
+		rol->ObtInfo().cPersonas.ModificarPersona(personaBuscar);
 
 		ve.ImprimirMensaje("\nEL ESTADO SE INCLUYO SATISFACTORIAMENTE\n");
 	}
@@ -382,7 +372,7 @@ void Controlador::incluirEstado() {
 
 void Controlador::consultarEstado() {
 	InfoEstado estado;
-	Nodo<InfoPersona> *ptrPersona;
+	InfoPersona personaBuscar;
 	string cedula;
 
 	ve.Limpiar();
@@ -390,20 +380,20 @@ void Controlador::consultarEstado() {
 	ve.ImprimirLineasBlanco(1);
 
 	cedula = ve.LeerString("Cédula de persona: ");
+
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(cedula);
-		if (ptrPersona == NULL)
+		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
+		if(resp == false){
 			rol = rol->ObtDer();
-		else {
+		} else {
 			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
 			rol = NULL;
-		};
+		}
 	}
 
 	estado.codigo = ve.LeerNroDecimal("Código: ");
-	Nodo<InfoEstado> *e = ptrPersona->ObtInfo().pilaEstado.BuscarEstado(
-			estado.codigo);
+	Nodo<InfoEstado> *e = personaBuscar.pilaEstado.BuscarEstado(estado.codigo);
 	if (e != NULL) {
 		ve.ImprimirMensaje("EL ESTADO EXISTE\n\n");
 		ve.imprimirEstado(e->ObtInfo());
@@ -417,27 +407,25 @@ void Controlador::consultarEstado() {
 void Controlador::modificarEstado() {
 	InfoEstado estado;
 	string cedula;
-	Nodo<InfoPersona> *ptrPersona;
+	InfoPersona personaBuscar;
 
 	ve.Limpiar();
-	ve.ImprimirEncabezado("      INCLUIR ESTADO", "   ================");
+	ve.ImprimirEncabezado("      MODIFICAR ESTADO", "   ================");
 	ve.ImprimirLineasBlanco(1);
 
-	cedula = ve.LeerString("Cédula de persona: ");
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(cedula);
-		if (ptrPersona == NULL)
+		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
+		if(resp == false){
 			rol = rol->ObtDer();
-		else {
+		} else {
 			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
 			rol = NULL;
-		};
+		}
 	}
 
 	estado.codigo = ve.LeerNroDecimal("Código: ");
-	Nodo<InfoEstado> *e = ptrPersona->ObtInfo().pilaEstado.BuscarEstado(
-			estado.codigo);
+	Nodo<InfoEstado> *e = personaBuscar.pilaEstado.BuscarEstado(estado.codigo);
 	if (e != NULL) {
 		ve.ImprimirMensaje("EL ESTADO EXISTE\n\n");
 		ve.imprimirEstado(e->ObtInfo());
@@ -446,7 +434,9 @@ void Controlador::modificarEstado() {
 		estado.nombre = ve.LeerString("Nombre: ");
 		estado.fecha = ve.LeerString("Fecha: ");
 
-		ptrPersona->ObtInfo().pilaEstado.IncluirEstado(estado);
+		personaBuscar.pilaEstado.IncluirEstado(estado);
+		rol->ObtInfo().cPersonas.ModificarPersona(personaBuscar);
+
 		ve.ImprimirMensaje("\nEL ESTADO SE INCLUYO SATISFACTORIAMENTE\n");
 	} else {
 
@@ -459,7 +449,7 @@ void Controlador::modificarEstado() {
 void Controlador::eliminarEstado() {
 	int dec, codigo;
 	string cedula;
-	Nodo<InfoPersona> *ptrPersona;
+	InfoPersona personaBuscar;
 
 	ve.Limpiar();
 	ve.ImprimirEncabezado("      ELIMINAR ESTADO", "   ================");
@@ -468,23 +458,25 @@ void Controlador::eliminarEstado() {
 	cedula = ve.LeerString("Cédula de persona: ");
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(cedula);
-		if (ptrPersona == NULL)
+		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
+		if(resp == false){
 			rol = rol->ObtDer();
-		else {
+		} else {
 			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
 			rol = NULL;
-		};
+		}
 	}
 
+
 	codigo = ve.LeerNroDecimal("Código: ");
-	Nodo<InfoEstado> *e = ptrPersona->ObtInfo().pilaEstado.BuscarEstado(codigo);
+	Nodo<InfoEstado> *e = personaBuscar.pilaEstado.BuscarEstado(codigo);
 	if (e != NULL) {
 		ve.ImprimirMensaje("EL ESTADO EXISTE\n\n");
 		ve.imprimirEstado(e->ObtInfo());
 		dec = ve.LeerNroDecimal("Desea eliminar estado? (1)SI (2)NO: ");
 		if (dec == 1) {
-			ptrPersona->ObtInfo().pilaEstado.EliminarEstado(codigo);
+			personaBuscar.pilaEstado.EliminarEstado(codigo);
+			rol->ObtInfo().cPersonas.ModificarPersona(personaBuscar);
 		}
 	} else {
 		ve.ImprimirMensaje("\nEL ESTADO NO EXISTE\n");
@@ -495,23 +487,25 @@ void Controlador::eliminarEstado() {
 
 void Controlador::imprimirEstados() {
 	string cedula;
-	Nodo<InfoPersona> *ptrPersona;
+	InfoPersona personaBuscar;
 
 	cedula = ve.LeerString("Cedula de Persona: ");
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		ptrPersona = rol->ObtInfo().cPersonas.BuscarPersona(cedula);
-		if (ptrPersona == NULL)
+		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
+		if(resp == false){
 			rol = rol->ObtDer();
-		else {
+		} else {
+			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
 			rol = NULL;
-		};
+		}
 	}
 
-	if (ptrPersona != NULL) {
-		MEstado estados = ptrPersona->ObtInfo().pilaEstado;
+	if (personaBuscar.cedula != "") {
+		MEstado estados = personaBuscar.pilaEstado;
 		ve.imprimirListaEstados(estados);
 	} else {
 		ve.ImprimirMensaje("LA PERSONA NO EXISTE\n\n");
 	}
 }
+

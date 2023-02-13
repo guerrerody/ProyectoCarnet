@@ -26,7 +26,7 @@ int main() {
 			c.gestionPersonas();
 			break;
 		case 3:
-			//c.gestionEstado();
+			c.gestionEstados();
 			break;
 		}
 	} while (opc != 4);

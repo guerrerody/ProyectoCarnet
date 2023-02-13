@@ -51,35 +51,54 @@ bool MPersona::BuscarPersona(string cedulaPersona, InfoPersona &persona) {
 }
 
 bool MPersona::ModificarPersona(InfoPersona persona) {
-	/*
-	Nodo<InfoPersona> *p = this->BuscarPersona(persona.cedula);
-	if (p != NULL) {
-		p->AsigInfo(persona);
-		return true;
-	}
-	*/
-	return false;
+	InfoPersona marca, valor;
 
+	bool encontro = false;
+	if (!Vacia())
+	{
+		Insertar(marca);
+
+		bool finCola = false;
+		while (!finCola) {
+			Remover(valor);
+			if (valor.cedula == marca.cedula) {
+				finCola = true;
+			} else {
+				if (valor.cedula == persona.cedula) {
+					encontro = true;
+					Insertar(persona);
+				} else {
+					Insertar(valor);
+				}
+			}
+		}
+	}
+
+	return encontro;
 }
 
 bool MPersona::EliminarPersona(string cedulaPersona) {
-	/*
-	Nodo<InfoPersona> *p, *marca;
-	p = this->BuscarPersona(cedulaPersona);
-	InfoPersona q;
-	marca = frente;
-	if (p != NULL) {
-		do {
-			if (frente->ObtInfo().cedula != cedulaPersona) {
-				Insertar(frente->ObtInfo());
-				Remover(q);
-			} else {
-				Insertar(frente->ObtDer()->ObtInfo());
-				Remover(q);
-			}
-		} while (marca->ObtInfo().cedula != frente->ObtInfo().cedula);
+	InfoPersona marca, valor;
 
-		return true;
-	} else*/
-		return false;
+	bool encontro = false;
+	if (!Vacia())
+	{
+		Insertar(marca);
+
+		bool finCola = false;
+		while (!finCola) {
+			Remover(valor);
+			if (valor.cedula == marca.cedula) {
+				finCola = true;
+			} else {
+				if (valor.cedula == cedulaPersona) {
+					encontro = true;
+				} else {
+					Insertar(valor);	
+				}
+			}
+		}
+	}
+
+	return encontro;
 }
