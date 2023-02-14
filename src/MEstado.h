@@ -31,11 +31,11 @@ public:
 	MEstado();
 	~MEstado();
 
-	Nodo<InfoEstado>* ObtTope();
 	bool IncluirEstado(InfoEstado estado);
-	Nodo<InfoEstado>* BuscarEstado(int codigo);
+	Nodo<InfoEstado>* ObtTope();
+	bool BuscarEstado(int codigo, InfoEstado &estado);
 	bool ModificarEstado(InfoEstado rol);
-	bool EliminarEstado(int codigo);
+	bool EliminarEstado(int codigo, InfoEstado &estado);
 
 };
 

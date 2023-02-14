@@ -334,7 +334,8 @@ void Controlador::incluirEstado() {
 			vp.ImprimirMensaje("INGRESE DATOS DEL ESTADO\n\n");
 
 			estado.codigo = ve.LeerNro("Código del Estado: ");
-			if (personaBuscar.pilaEstado->BuscarEstado(estado.codigo) != NULL) {
+			InfoEstado estadoBuscar;
+			if (personaBuscar.pilaEstado->BuscarEstado(estado.codigo, estadoBuscar) != false) {
 				ve.ImprimirMensaje("EL ESTADO YA EXISTE\n\n");
 			} else {
 				estado.nombre = ve.LeerString("Nombre: ");
@@ -358,7 +359,6 @@ void Controlador::incluirEstado() {
 }
 
 void Controlador::consultarEstado() {
-	/*
 	InfoEstado estado;
 	InfoPersona personaBuscar;
 	string cedula;
@@ -371,7 +371,8 @@ void Controlador::consultarEstado() {
 
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
 	while (rol != NULL) {
-		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
+		MPersona* personas = rol->ObtInfo().cPersonas;
+		bool resp = personas->BuscarPersona(cedula, personaBuscar);
 		if(resp == false){
 			rol = rol->ObtDer();
 		} else {
@@ -381,20 +382,19 @@ void Controlador::consultarEstado() {
 	}
 
 	estado.codigo = ve.LeerNroDecimal("Código: ");
-	Nodo<InfoEstado> *e = personaBuscar.pilaEstado.BuscarEstado(estado.codigo);
-	if (e != NULL) {
+	InfoEstado estadoBuscar;
+
+	if (personaBuscar.pilaEstado->BuscarEstado(estado.codigo, estadoBuscar)) {
 		ve.ImprimirMensaje("EL ESTADO EXISTE\n\n");
-		ve.imprimirEstado(e->ObtInfo());
+		ve.imprimirEstado(estadoBuscar);
 	} else {
 		ve.ImprimirMensaje("\nEL ESTADO NO EXISTE\n");
 	}
 	ve.ImprimirLineasBlanco(1);
 	ve.Pausa();
-	*/
 }
 
 void Controlador::modificarEstado() {
-	/*
 	InfoEstado estado;
 	string cedula;
 	InfoPersona personaBuscar;
@@ -403,10 +403,12 @@ void Controlador::modificarEstado() {
 	ve.ImprimirEncabezado("      MODIFICAR ESTADO", "   ================");
 	ve.ImprimirLineasBlanco(1);
 
+	cedula = ve.LeerString("Cédula de persona: ");
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
+	MPersona* personas;
 	while (rol != NULL) {
-		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
-		if(resp == false){
+		personas = rol->ObtInfo().cPersonas;
+		if(!personas->BuscarPersona(cedula, personaBuscar)){
 			rol = rol->ObtDer();
 		} else {
 			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
@@ -415,17 +417,17 @@ void Controlador::modificarEstado() {
 	}
 
 	estado.codigo = ve.LeerNroDecimal("Código: ");
-	Nodo<InfoEstado> *e = personaBuscar.pilaEstado.BuscarEstado(estado.codigo);
-	if (e != NULL) {
+	InfoEstado estadoBuscar;
+	if (personaBuscar.pilaEstado->BuscarEstado(estado.codigo, estadoBuscar)) {
 		ve.ImprimirMensaje("EL ESTADO EXISTE\n\n");
-		ve.imprimirEstado(e->ObtInfo());
+		ve.imprimirEstado(estadoBuscar);
 
 		ve.ImprimirMensaje("\nINGRESAR DATOS DE ESTADO\n\n");
 		estado.nombre = ve.LeerString("Nombre: ");
 		estado.fecha = ve.LeerString("Fecha: ");
 
-		personaBuscar.pilaEstado.IncluirEstado(estado);
-		rol->ObtInfo().cPersonas.ModificarPersona(personaBuscar);
+		personaBuscar.pilaEstado->ModificarEstado(estado);
+		personas->ModificarPersona(personaBuscar);
 
 		ve.ImprimirMensaje("\nEL ESTADO SE INCLUYO SATISFACTORIAMENTE\n");
 	} else {
@@ -434,11 +436,9 @@ void Controlador::modificarEstado() {
 	}
 	ve.ImprimirLineasBlanco(1);
 	ve.Pausa();
-	*/
 }
 
 void Controlador::eliminarEstado() {
-	/*
 	int dec, codigo;
 	string cedula;
 	InfoPersona personaBuscar;
@@ -449,9 +449,10 @@ void Controlador::eliminarEstado() {
 
 	cedula = ve.LeerString("Cédula de persona: ");
 	Nodo<InfoRol> *rol = mr.ObtPrimero();
+	MPersona* personas;
 	while (rol != NULL) {
-		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
-		if(resp == false){
+		personas = rol->ObtInfo().cPersonas;
+		if(!personas->BuscarPersona(cedula, personaBuscar)){
 			rol = rol->ObtDer();
 		} else {
 			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
@@ -461,21 +462,22 @@ void Controlador::eliminarEstado() {
 
 
 	codigo = ve.LeerNroDecimal("Código: ");
-	Nodo<InfoEstado> *e = personaBuscar.pilaEstado.BuscarEstado(codigo);
-	if (e != NULL) {
+	InfoEstado estadoBuscar;
+
+	if (personaBuscar.pilaEstado->BuscarEstado(codigo, estadoBuscar)) {
 		ve.ImprimirMensaje("EL ESTADO EXISTE\n\n");
-		ve.imprimirEstado(e->ObtInfo());
+		ve.imprimirEstado(estadoBuscar);
 		dec = ve.LeerNroDecimal("Desea eliminar estado? (1)SI (2)NO: ");
 		if (dec == 1) {
-			personaBuscar.pilaEstado.EliminarEstado(codigo);
-			rol->ObtInfo().cPersonas.ModificarPersona(personaBuscar);
+			InfoEstado estadoEliminado;
+			personaBuscar.pilaEstado->EliminarEstado(codigo, estadoEliminado);
+			personas->ModificarPersona(personaBuscar);
 		}
 	} else {
 		ve.ImprimirMensaje("\nEL ESTADO NO EXISTE\n");
 	}
 	ve.ImprimirLineasBlanco(1);
 	ve.Pausa();
-	*/
 }
 
 void Controlador::imprimirEstados() {

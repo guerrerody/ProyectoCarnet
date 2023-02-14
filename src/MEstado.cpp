@@ -15,101 +15,93 @@ MEstado::~MEstado() {
 
 }
 
+Nodo<InfoEstado>* MEstado::ObtTope(){
+	return tope;
+}
+
 bool MEstado::IncluirEstado(InfoEstado estado) {
 	return Insertar(estado);
 
 }
 
-Nodo<InfoEstado>* MEstado::ObtTope() {
-	return tope;
-}
-
-Nodo<InfoEstado>* MEstado::BuscarEstado(int codigo) {
-	Nodo<InfoEstado> *p, *valor;
+bool MEstado::BuscarEstado(int codigo, InfoEstado &estado) {
 	Pila<InfoEstado> estAux;
-	p = tope;
 
-	valor = NULL;
 	bool encontro = false;
 
 	if (!Vacia()) {
-		return valor;
-	}
-
-	while (!(encontro)) {
-		if (p->ObtInfo().codigo == codigo) {
-			valor = p;
-			encontro = true;
-			while (!estAux.Vacia()) {
-				InfoEstado e;
-				estAux.Remover(e);
-				Insertar(e);
-			}
-		} else {
-			InfoEstado q;
-			Remover(q);
-
-			estAux.Insertar(q);
-
-			if (tope == NULL) {
+		while(!Vacia()){
+			InfoEstado e;
+			Remover(e);
+			if(e.codigo == codigo){
 				encontro = true;
-				while (!estAux.Vacia()) {
-					InfoEstado e;
-					estAux.Remover(e);
-					Insertar(e);
-				}
-			} else {
-				p = tope;
+				estado = e;
 			}
+			estAux.Insertar(e);
+		}
+
+		while(!estAux.Vacia()){
+			InfoEstado e;
+			estAux.Remover(e);
+			Insertar(e);
 		}
 	}
-	return valor;
 
+	return encontro;
 }
 
 bool MEstado::ModificarEstado(InfoEstado estado) {
-	Nodo<InfoEstado> *p = this->BuscarEstado(estado.codigo);
 	Pila<InfoEstado> estAux;
 	InfoEstado u;
 
-	if (p != NULL) {
-		p->AsigInfo(estado);
-		return true;
-	} else
-		return false;
+	bool encontro = false;
 
-	/*if (p != NULL) {
-	 while(tope != NULL){
-	 estAux.Insertar(tope->ObtInfo());
-	 Remover(u);
-	 }
-	 while(!estAux.Vacia()){
-	 estAux.Remover(u);
-	 if(u.codigo == p->ObtInfo().codigo){
-	 Insertar(estado);
-	 }
-	 }
-	 return true;
-	 } else return false;*/
-}
-
-bool MEstado::EliminarEstado(int codigo) {
-	Nodo<InfoEstado> *p = this->BuscarEstado(codigo);
-	Pila<InfoEstado> estAux;
-	InfoEstado u;
-
-	if (p != NULL) {
-		while (tope != NULL) {
-			estAux.Insertar(tope->ObtInfo());
-			Remover(u);
-		}
-		while (!estAux.Vacia()) {
-			estAux.Remover(u);
-			if (u.codigo != p->ObtInfo().codigo) {
-				Insertar(u);
+	if (!Vacia()) {
+		while(!Vacia()){
+			InfoEstado e;
+			Remover(e);
+			if(e.codigo == estado.codigo){
+				encontro = true;
+				estAux.Insertar(estado);
+			} else {
+				estAux.Insertar(e);	
 			}
 		}
-		return true;
-	} else
-		return false;
+
+		while(!estAux.Vacia()){
+			InfoEstado e;
+			estAux.Remover(e);
+			Insertar(e);
+		}
+	}
+
+	return encontro;
+}
+
+bool MEstado::EliminarEstado(int codigo, InfoEstado &estado) {
+	Pila<InfoEstado> estAux;
+	InfoEstado u;
+
+	bool encontro = false;
+
+	if (!Vacia()) {
+		while(!Vacia()){
+			InfoEstado e;
+			Remover(e);
+			if(e.codigo == codigo){
+				encontro = true;
+				estado = e;
+			} else {
+				estAux.Insertar(e);	
+			}
+		}
+
+		while(!estAux.Vacia()){
+			InfoEstado e;
+			estAux.Remover(e);
+			Insertar(e);
+		}
+	}
+
+	return encontro;
 }
