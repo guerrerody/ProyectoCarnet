@@ -40,7 +40,6 @@ void Controlador::incluirRol() {
 	vr.ImprimirEncabezado("      INCLUIR ROL", "   ================");
 	vr.ImprimirLineasBlanco(1);
 
-	/*
 	rol.codigo = vr.LeerNro("Código del Rol: ");
 	if (mr.BuscarRol(rol.codigo) != NULL) {
 		vr.ImprimirMensaje("EL ROL YA EXISTE\n\n");
@@ -53,23 +52,6 @@ void Controlador::incluirRol() {
 
 		vr.ImprimirMensaje("\nEL ROL SE INCLUYO SATISFACTORIAMENTE\n");
 	}
-	*/
-
-
-	InfoRol newRol1;
-	newRol1.codigo = 123;
-	newRol1.nombre = "ADMIN";
-	newRol1.descripcion = "Administracion";
-	newRol1.precioCarnet = 12.00;
-	mr.IncluirRol(newRol1);
-	InfoRol newRol2;
-	newRol2.codigo = 321;
-	newRol2.nombre = "USER";
-	newRol2.descripcion = "Usuario";
-	newRol2.precioCarnet = 10.00;
-	mr.IncluirRol(newRol2);
-	vr.ImprimirMensaje("\nSE INCLUYEROS 2 ROLES DE PRUEBA (123 Y 321)\n");
-
 
 	vr.ImprimirLineasBlanco(1);
 	vr.Pausa();
