@@ -21,13 +21,12 @@ struct InfoPersona {
 	string nombre;
 	string apellido;
 	int sexo;
-	int tipoPersona; // [Estudiante, Docente, Obrero, Administrativo]
 	string correo;
 	string decanato;
-	MEstado pilaEstado; // [Entregado, Verificado]
+	MEstado *pilaEstado; // [Entregado, En Proceso, Verificado, etc.]
 
 	InfoPersona() :
-		cedula(""), sexo(0), tipoPersona(0) { // Inicializacion de los valores numericos para el struct
+		sexo(1), pilaEstado(new MEstado()) { // Inicializacion de los valores numericos para el struct
 	}
 };
 
@@ -37,11 +36,9 @@ public:
 	MPersona();
 	~MPersona();
 
-	Nodo<InfoPersona>* ObtFrente();
-	bool IncluirPersona(InfoPersona persona);
 	bool BuscarPersona(string cedulaPersona, InfoPersona &persona);
 	bool ModificarPersona(InfoPersona persona);
-	bool EliminarPersona(string cedulaPersona);
+	bool EliminarPersona(string cedulaPersona, InfoPersona &persona);
 
 };
 

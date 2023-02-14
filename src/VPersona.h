@@ -17,8 +17,8 @@ public:
 	virtual ~VPersona();
 
 	int menuPersona(); //Sub-menu para elegir una opcion (Incluir,buscar, modificar)
-	void imprimirListaPersonas(MPersona &rol); //Reporte de la lista despues de incluir personas
-	void imprimirPersona(InfoPersona infoPersona); //Imprimir los datos del nodo
+	void imprimirListaPersonas(string rol, MPersona &personas); //Reporte de la lista despues de incluir personas
+	void imprimirPersona(string rol, InfoPersona infoPersona); //Imprimir los datos del nodo
 };
 
 #endif /* VPERSONA_H_ */

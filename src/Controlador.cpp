@@ -40,7 +40,8 @@ void Controlador::incluirRol() {
 	vr.ImprimirEncabezado("      INCLUIR ROL", "   ================");
 	vr.ImprimirLineasBlanco(1);
 
-	rol.codigo = vr.LeerNro("Código: ");
+	/*
+	rol.codigo = vr.LeerNro("Código del Rol: ");
 	if (mr.BuscarRol(rol.codigo) != NULL) {
 		vr.ImprimirMensaje("EL ROL YA EXISTE\n\n");
 	} else {
@@ -48,13 +49,28 @@ void Controlador::incluirRol() {
 		rol.descripcion = vr.LeerString("Descripción: ");
 		rol.precioCarnet = vr.LeerNroDecimal("Precio Carnet: ");
 
-		MPersona p;
-		rol.cPersonas = p;
-
 		mr.IncluirRol(rol);
 
 		vr.ImprimirMensaje("\nEL ROL SE INCLUYO SATISFACTORIAMENTE\n");
 	}
+	*/
+
+
+	InfoRol newRol1;
+	newRol1.codigo = 123;
+	newRol1.nombre = "ADMIN";
+	newRol1.descripcion = "Administracion";
+	newRol1.precioCarnet = 12.00;
+	mr.IncluirRol(newRol1);
+	InfoRol newRol2;
+	newRol2.codigo = 321;
+	newRol2.nombre = "USER";
+	newRol2.descripcion = "Usuario";
+	newRol2.precioCarnet = 10.00;
+	mr.IncluirRol(newRol2);
+	vr.ImprimirMensaje("\nSE INCLUYEROS 2 ROLES DE PRUEBA (123 Y 321)\n");
+
+
 	vr.ImprimirLineasBlanco(1);
 	vr.Pausa();
 }
@@ -63,29 +79,29 @@ void Controlador::consultarRol() {
 	InfoRol rol;
 
 	vr.Limpiar();
-	vr.ImprimirEncabezado("      CONSULTAR ROL", "   ================");
+	vr.ImprimirEncabezado("      CONSULTAR ROL", "     ================");
 	vr.ImprimirLineasBlanco(1);
 
-	rol.codigo = vr.LeerNro("Código: ");
+	rol.codigo = vr.LeerNro("Código del Rol: ");
 	Nodo<InfoRol> *ptrRol = mr.BuscarRol(rol.codigo);
 
 	if (ptrRol == NULL) {
 		vr.ImprimirMensaje("ROL NO ENCONTRADO\n\n");
-		vr.ImprimirLineasBlanco(1);
-		vr.Pausa();
 	} else {
 		vr.imprimirRol(ptrRol->ObtInfo());
 	}
+	vr.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
 
 void Controlador::modificarRol() {
 	InfoRol rol;
 
 	vr.Limpiar();
-	vr.ImprimirEncabezado("      MODIFICAR ROL", "   ================");
+	vr.ImprimirEncabezado("      MODIFICAR ROL", "     ===============");
 	vr.ImprimirLineasBlanco(1);
 
-	rol.codigo = vr.LeerNro("Código: ");
+	rol.codigo = vr.LeerNro("Código del Rol: ");
 	Nodo<InfoRol> *ptrRol = mr.BuscarRol(rol.codigo);
 
 	if (ptrRol == NULL) {
@@ -99,39 +115,37 @@ void Controlador::modificarRol() {
 
 		vr.ImprimirMensaje("\nEL ROL SE MODIFICO SATISFACTORIAMENTE\n");
 	}
-
 	vr.ImprimirLineasBlanco(1);
 	vr.Pausa();
 }
 
 void Controlador::imprimirRoles() {
 	vr.imprimirListaRoles(mr);
+	vr.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
 
 void Controlador::eliminarRol() {
-	int dec, codigo;
-
 	vr.Limpiar();
-	vr.ImprimirEncabezado("      ELIMINAR ROL", "   ================");
+	vr.ImprimirEncabezado("      ELIMINAR ROL", "     ==============");
 	vr.ImprimirLineasBlanco(1);
 
-	codigo = vp.LeerNroDecimal("Código: ");
+	int codigo = vp.LeerNro("Código del Rol: ");
 	Nodo<InfoRol> *ptrRol = mr.BuscarRol(codigo);
 
 	if (ptrRol == NULL) {
 		vr.ImprimirMensaje("ROL NO ENCONTRADO\n\n");
-		vr.ImprimirLineasBlanco(1);
-		vr.Pausa();
 	} else {
-		vr.ImprimirMensaje("ROL ENCONTRADO\n\n");
 		vr.imprimirRol(ptrRol->ObtInfo());
-		dec = vr.LeerNroDecimal("Desea eliminar el rol? (1)SI (2)NO: ");
-		if (dec == 1) {
+		if (vr.LeerValidarNro("Está seguro de eliminar el rol? (1)SI (2)NO: ", 1, 2) == 1) {
 			InfoRol r;
-			mr.EliminarRol(codigo, r);
+			if (mr.EliminarRol(codigo, r)) {
+				vr.ImprimirMensaje("ROL ELIMINADO SATISFACTORIAMENTE\n\n");
+			}
 		}
 	}
-
+	vr.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
 
 void Controlador::gestionPersonas() {
@@ -160,103 +174,93 @@ void Controlador::gestionPersonas() {
 }
 
 void Controlador::incluirPersona() {
-	InfoPersona persona, per;
-
 	vp.Limpiar();
-	vp.ImprimirEncabezado("      INCLUIR PERSONA", "   ================");
+	vp.ImprimirEncabezado("      INCLUIR PERSONA", "      ===============");
 	vp.ImprimirLineasBlanco(1);
 
+	InfoPersona persona;
 	persona.cedula = vp.LeerString("Cédula: ");
-	if (mp.BuscarPersona(persona.cedula, per) != false) {
+	if (mp.BuscarPersona(persona.cedula, persona)) {
 		vp.ImprimirMensaje("LA PERSONA YA EXISTE\n\n");
 	} else {
 		persona.nombre = vp.LeerString("Nombre: ");
 		persona.apellido = vp.LeerString("Apellido: ");
-		persona.sexo = vp.LeerNroDecimal("Sexo (1)MASCULINO (2)FEMENINO: ");
+		persona.sexo = vp.LeerNro("Sexo (1)MASCULINO (2)FEMENINO: ");
 		persona.correo = vp.LeerString("Correo Electrónico: ");
 		persona.decanato = vp.LeerString("Decanato: ");
-		persona.tipoPersona = vp.LeerNroDecimal("Código de Rol: ");
 
-		MEstado e;
-		persona.pilaEstado = e;
-
-		Nodo<InfoRol> *rol = mr.BuscarRol(persona.tipoPersona);
-		while (rol == NULL) {
+		do {
+			int codRol = vp.LeerNro("Código de Rol: ");
+			Nodo<InfoRol> *pRol = mr.BuscarRol(codRol);
+			if (pRol != NULL) {
+				pRol->ObtInfo().cPersonas->Insertar(persona);
+				vp.ImprimirMensaje("\nLA PERSONA SE INCLUYO SATISFACTORIAMENTE\n");
+				break;
+			}
 			vp.ImprimirMensaje("EL ROL NO EXISTE, INGRESAR ROL VALIDO\n\n");
-			persona.tipoPersona = vp.LeerNroDecimal("Código de Rol: ");
-			rol = mr.BuscarRol(persona.tipoPersona);
-		};
-
-		rol->ObtInfo().cPersonas.Insertar(persona);
-
-		vp.ImprimirMensaje("\nLA PERSONA SE INCLUYO SATISFACTORIAMENTE\n");
+		} while(true);
 	}
+
 	vp.ImprimirLineasBlanco(1);
 	vp.Pausa();
 }
 
 void Controlador::consultarPersona() {
-
 	vp.Limpiar();
-	vp.ImprimirEncabezado("      CONSULTAR PERSONA", "   ================");
+	vp.ImprimirEncabezado("      CONSULTAR PERSONA", "      =================");
 	vp.ImprimirLineasBlanco(1);
 
 	string cedula = vp.LeerString("Cédula: ");
-	InfoPersona personaBuscar;
-
-	Nodo<InfoRol> *rol = mr.ObtPrimero();
-	while (rol != NULL) {
-		rol = (rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar) == false) ? rol->ObtDer() : NULL;
+	Nodo<InfoRol> *pRol = mr.ObtPrimero();
+	while (pRol != NULL) {
+		InfoPersona personaBuscar;
+		MPersona *personas = pRol->ObtInfo().cPersonas;
+		if (personas->BuscarPersona(cedula, personaBuscar)) {
+			vp.imprimirPersona(pRol->ObtInfo().nombre, personaBuscar);
+			break;
+		}
+		pRol = pRol->ObtDer();
 	}
-	if (personaBuscar.cedula == "") {
+	if (pRol == NULL) {
 		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
-		vp.ImprimirLineasBlanco(1);
-		vr.Pausa();
-	} else {
-		vp.imprimirPersona(personaBuscar);
 	}
+
+	vp.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
 
 void Controlador::modificarPersona() {
-	InfoPersona persona, personaBuscar;
-
 	vp.Limpiar();
-	vp.ImprimirEncabezado("      MODIFICAR PERSONA", "   ================");
+	vp.ImprimirEncabezado("      MODIFICAR PERSONA", "      =================");
 	vp.ImprimirLineasBlanco(1);
 
+	InfoPersona persona;
 	persona.cedula = vp.LeerString("Cédula: ");
+	Nodo<InfoRol> *pRol = mr.ObtPrimero();
+	while (pRol != NULL) {
+		InfoPersona personaBuscar;
+		MPersona *personas = pRol->ObtInfo().cPersonas;
+		if (personas->BuscarPersona(persona.cedula, personaBuscar)) {
+			vp.imprimirPersona(pRol->ObtInfo().nombre, personaBuscar);
+			vp.ImprimirLineasBlanco(1);
+			vp.ImprimirMensaje("INGRESE DATOS A MODIFICAR\n\n");
 
-	Nodo<InfoRol> *rol = mr.ObtPrimero();
-	while (rol != NULL) {
-		rol = (rol->ObtInfo().cPersonas.BuscarPersona(persona.cedula, personaBuscar) == false) ? rol->ObtDer() : NULL;
+			persona.nombre = vp.LeerString("Nombre: ");
+			persona.apellido = vp.LeerString("Apellido: ");
+			persona.sexo = vp.LeerNroDecimal("Sexo (1)MASCULINO (2)FEMENINO: ");
+			persona.correo = vp.LeerString("Correo Electrónico: ");
+			persona.decanato = vp.LeerString("Decanato: ");
+
+			personas->ModificarPersona(persona);
+
+			vp.ImprimirMensaje("\nLA PERSONA SE MODIFICO SATISFACTORIAMENTE\n");
+
+			break;
+		}
+		pRol = pRol->ObtDer();
 	}
-
-	if (personaBuscar.cedula == "") {
-		vp.ImprimirMensaje("LA PERSONA NO EXISTE\n\n");
-	} else {
-		vp.ImprimirMensaje("PERSONA ENCONTRADA\n\n");
-		vp.ImprimirMensaje("DATOS DE PERSONA\n\n");
-		vp.imprimirPersona(personaBuscar);
-		vp.ImprimirLineasBlanco(1);
-		vp.ImprimirMensaje("INGRESE DATOS A MODIFICAR\n\n");
-
-		persona.nombre = vp.LeerString("Nombre: ");
-		persona.apellido = vp.LeerString("Apellido: ");
-		persona.sexo = vp.LeerNroDecimal("Sexo (1)MASCULINO (2)FEMENINO: ");
-		persona.correo = vp.LeerString("Correo Electrónico: ");
-		persona.decanato = vp.LeerString("Decanato: ");
-		persona.tipoPersona = vp.LeerNroDecimal("Código de Rol: ");
-		Nodo<InfoRol> *auxRol = mr.BuscarRol(persona.tipoPersona);
-
-		while (auxRol == NULL) {
-			vp.ImprimirMensaje("EL ROL NO EXISTE, INGRESAR ROL VALIDO\n\n");
-			persona.tipoPersona = vp.LeerNroDecimal("Código de Rol: ");
-			auxRol = mr.BuscarRol(persona.tipoPersona);
-		};
-
-		auxRol->ObtInfo().cPersonas.ModificarPersona(persona);
-
-		vp.ImprimirMensaje("\nLA PERSONA SE MODIFICO SATISFACTORIAMENTE\n");
+	if (pRol == NULL) {
+		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
 	}
 
 	vr.ImprimirLineasBlanco(1);
@@ -264,47 +268,47 @@ void Controlador::modificarPersona() {
 }
 
 void Controlador::eliminarPersona() {
-	int dec;
-	string cedula;
-	InfoPersona personaBuscar;
-
 	vp.Limpiar();
-	vp.ImprimirEncabezado("      ELIMINAR PERSONA", "   ================");
+	vp.ImprimirEncabezado("      ELIMINAR PERSONA", "      ================");
 	vp.ImprimirLineasBlanco(1);
 
-	cedula = vp.LeerString("Cédula: ");
-
-	Nodo<InfoRol> *rol = mr.ObtPrimero();
-	while (rol != NULL) {
-		rol = (rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar) == false) ? rol->ObtDer() : NULL;
-	}
-
-	if (personaBuscar.cedula == "") {
-		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
-		vp.ImprimirLineasBlanco(1);
-		vr.Pausa();
-	} else {
-		vp.ImprimirMensaje("PERSONA ENCONTRADA\n\n");
-		vp.imprimirPersona(personaBuscar);
-		dec = vp.LeerNroDecimal("Desea eliminar persona? (1)SI (2)NO: ");
-		if (dec == 1) {
-			rol->ObtInfo().cPersonas.EliminarPersona(cedula);
+	string cedula = vp.LeerString("Cédula: ");
+	Nodo<InfoRol> *pRol = mr.ObtPrimero();
+	while (pRol != NULL) {
+		InfoPersona personaBuscar;
+		MPersona *personas = pRol->ObtInfo().cPersonas;
+		if (personas->BuscarPersona(cedula, personaBuscar)) {
+			vp.imprimirPersona(pRol->ObtInfo().nombre, personaBuscar);
+			if (vp.LeerValidarNro("Está seguro de eliminar la Persona? (1)SI (2)NO: ", 1, 2) == 1) {
+				InfoPersona p;
+				if (personas->EliminarPersona(cedula, p)) {
+					vr.ImprimirMensaje("PERSONA ELIMINADA SATISFACTORIAMENTE\n\n");
+				}
+			}
+			break;
 		}
+		pRol = pRol->ObtDer();
 	}
+	if (pRol == NULL) {
+		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
+	}
+
+	vp.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
 
 void Controlador::imprimirPersonas() {
-	int codigo;
-
-	codigo = vp.LeerNroDecimal("Seleccionar Rol: ");
+	int codigo = vp.LeerNro("Código del Rol: ");
 	Nodo<InfoRol> *rol = mr.BuscarRol(codigo);
 
 	if (rol != NULL) {
-		MPersona personas = rol->ObtInfo().cPersonas;
-		vp.imprimirListaPersonas(personas);
+		MPersona *personas = rol->ObtInfo().cPersonas;
+		vp.imprimirListaPersonas(rol->ObtInfo().nombre, *personas);
 	} else {
 		vp.ImprimirMensaje("EL ROL NO EXISTE\n\n");
 	}
+	vp.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
 
 void Controlador::gestionEstados() {
@@ -332,45 +336,47 @@ void Controlador::gestionEstados() {
 }
 
 void Controlador::incluirEstado() {
+	vp.Limpiar();
+	ve.ImprimirEncabezado("      INCLUIR ESTADO", "     ================");
+	vp.ImprimirLineasBlanco(1);
+
 	InfoEstado estado;
-	string cedula;
-	InfoPersona personaBuscar;
+	string cedula = ve.LeerString("Cédula de Persona: ");
+	Nodo<InfoRol> *pRol = mr.ObtPrimero();
+	while (pRol != NULL) {
+		InfoPersona personaBuscar;
+		MPersona *personas = pRol->ObtInfo().cPersonas;
+		if (personas->BuscarPersona(cedula, personaBuscar)) {
+			vp.imprimirPersona(pRol->ObtInfo().nombre, personaBuscar);
+			vp.ImprimirLineasBlanco(1);
+			vp.ImprimirMensaje("INGRESE DATOS DEL ESTADO\n\n");
 
-	ve.Limpiar();
-	ve.ImprimirEncabezado("      INCLUIR ESTADO", "   ================");
-	ve.ImprimirLineasBlanco(1);
+			estado.codigo = ve.LeerNro("Código del Estado: ");
+			if (personaBuscar.pilaEstado->BuscarEstado(estado.codigo) != NULL) {
+				ve.ImprimirMensaje("EL ESTADO YA EXISTE\n\n");
+			} else {
+				estado.nombre = ve.LeerString("Nombre: ");
+				estado.fecha = ve.LeerString("Fecha: ");
 
-	cedula = ve.LeerString("Cédula de persona: ");
+				personaBuscar.pilaEstado->IncluirEstado(estado);
+				personas->ModificarPersona(personaBuscar);
 
-	Nodo<InfoRol> *rol = mr.ObtPrimero();
-	while (rol != NULL) {
-		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
-		if(resp == false){
-			rol = rol->ObtDer();
-		} else {
-			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
-			rol = NULL;
+				ve.ImprimirMensaje("\nEL ESTADO SE INCLUYO SATISFACTORIAMENTE\n");
+			}
+			break;
 		}
+		pRol = pRol->ObtDer();
+	}
+	if (pRol == NULL) {
+		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
 	}
 
-	estado.codigo = ve.LeerNroDecimal("Código: ");
-	if (personaBuscar.pilaEstado.BuscarEstado(estado.codigo) != NULL) {
-		ve.ImprimirMensaje("EL ESTADO YA EXISTE\n\n");
-	} else {
-		ve.ImprimirMensaje("INGRESAR DATOS DE ESTADO\n\n");
-		estado.nombre = ve.LeerString("Nombre: ");
-		estado.fecha = ve.LeerString("Fecha: ");
-
-		personaBuscar.pilaEstado.IncluirEstado(estado);
-		rol->ObtInfo().cPersonas.ModificarPersona(personaBuscar);
-
-		ve.ImprimirMensaje("\nEL ESTADO SE INCLUYO SATISFACTORIAMENTE\n");
-	}
-	ve.ImprimirLineasBlanco(1);
-	ve.Pausa();
+	vr.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
 
 void Controlador::consultarEstado() {
+	/*
 	InfoEstado estado;
 	InfoPersona personaBuscar;
 	string cedula;
@@ -402,9 +408,11 @@ void Controlador::consultarEstado() {
 	}
 	ve.ImprimirLineasBlanco(1);
 	ve.Pausa();
+	*/
 }
 
 void Controlador::modificarEstado() {
+	/*
 	InfoEstado estado;
 	string cedula;
 	InfoPersona personaBuscar;
@@ -444,9 +452,11 @@ void Controlador::modificarEstado() {
 	}
 	ve.ImprimirLineasBlanco(1);
 	ve.Pausa();
+	*/
 }
 
 void Controlador::eliminarEstado() {
+	/*
 	int dec, codigo;
 	string cedula;
 	InfoPersona personaBuscar;
@@ -483,29 +493,30 @@ void Controlador::eliminarEstado() {
 	}
 	ve.ImprimirLineasBlanco(1);
 	ve.Pausa();
+	*/
 }
 
 void Controlador::imprimirEstados() {
-	string cedula;
-	InfoPersona personaBuscar;
+	string cedula = ve.LeerString("Cédula de Persona: ");
+	Nodo<InfoRol> *pRol = mr.ObtPrimero();
+	while (pRol != NULL) {
+		InfoPersona personaBuscar;
+		MPersona *personas = pRol->ObtInfo().cPersonas;
+		if (personas->BuscarPersona(cedula, personaBuscar)) {
+			vp.imprimirPersona(pRol->ObtInfo().nombre, personaBuscar);
+			vp.ImprimirLineasBlanco(1);
 
-	cedula = ve.LeerString("Cedula de Persona: ");
-	Nodo<InfoRol> *rol = mr.ObtPrimero();
-	while (rol != NULL) {
-		bool resp = rol->ObtInfo().cPersonas.BuscarPersona(cedula, personaBuscar);
-		if(resp == false){
-			rol = rol->ObtDer();
-		} else {
-			ve.ImprimirMensaje("LA PERSONA EXISTE\n\n");
-			rol = NULL;
+			MEstado *estados = personaBuscar.pilaEstado;
+			ve.imprimirListaEstados(*estados);
+
+			break;
 		}
+		pRol = pRol->ObtDer();
+	}
+	if (pRol == NULL) {
+		vp.ImprimirMensaje("PERSONA NO ENCONTRADA\n\n");
 	}
 
-	if (personaBuscar.cedula != "") {
-		MEstado estados = personaBuscar.pilaEstado;
-		ve.imprimirListaEstados(estados);
-	} else {
-		ve.ImprimirMensaje("LA PERSONA NO EXISTE\n\n");
-	}
+	vr.ImprimirLineasBlanco(1);
+	vr.Pausa();
 }
-

@@ -21,7 +21,7 @@ struct InfoEstado {
 	string fecha;
 
 	InfoEstado() :
-		codigo(0), nombre(0) { // Inicializacion de los valores numericos para el struct
+		codigo(0) { // Inicializacion de los valores numericos para el struct
 	}
 };
 

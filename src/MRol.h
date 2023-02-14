@@ -17,16 +17,15 @@ using namespace std;
 
 
 struct InfoRol {
-	MPersona cPersonas;
-
 	int codigo;
 	string nombre;
 	string descripcion;
 	float precioCarnet;
 	int cantCensados;
+	MPersona *cPersonas;
 
 	InfoRol() :
-		codigo(0), precioCarnet(0.00), cantCensados(0) { // Inicializacion de los valores numericos para el struct
+		codigo(0), precioCarnet(0.00), cantCensados(0), cPersonas(new MPersona()) { // Inicializacion de los valores numericos para el struct
 	}
 };
 

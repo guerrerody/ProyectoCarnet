@@ -9,14 +9,13 @@ using namespace std;
 
 template<class T>
 class Cola {
-protected:
+private:
 	Nodo<T> *frente, *final;
 
 public:
 	Cola();
 	~Cola();
 	bool Vacia();
-	bool Llena();
 	bool Insertar(T Valor);
 	bool Remover(T &Valor);
 };
@@ -46,47 +45,35 @@ bool Cola<T>::Vacia() {
 }
 
 template<class T>
-bool Cola<T>::Llena() {
-	Nodo<T> *p;
-	p = new Nodo<T>;
-	if (p == NULL)
-		return true;
-	else {
-		delete p;
-		return false;
-	}
-}
-
-template<class T>
 bool Cola<T>::Insertar(T valor) {
-	Nodo<T> *nuevo;
-	if (!Llena()) {
-		nuevo = new Nodo<T>;
+	Nodo<T> *nuevo = new Nodo<T>;
+	if (nuevo != NULL) {
 		nuevo->AsigInfo(valor);
 		nuevo->AsigDer(NULL);
-		if (final == NULL)
+		if (final == NULL) {
 			frente = nuevo;
-		else
+		} else {
 			final->AsigDer(nuevo);
+		}
 		final = nuevo;
 		return true;
-	} else
-		return false;
+	}
+	return false;
 }
 
 template<class T>
 bool Cola<T>::Remover(T &valor) {
-	Nodo<T> *primero;
 	if (!Vacia()) {
-		primero = frente;
+		Nodo<T> *primero = frente;
 		valor = primero->ObtInfo();
 		frente = primero->ObtDer();
-		if (frente == NULL)
+		if (frente == NULL) {
 			final = NULL;
+		}
 		delete primero;
 		return true;
-	} else
-		return false;
+	}
+	return false;
 }
 
 #endif

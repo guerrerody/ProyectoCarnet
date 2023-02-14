@@ -18,11 +18,10 @@ public:
 	Nodo<T>* ObtPrimero();
 	void AsigPrimero(Nodo<T> *p);
 	bool Vacia();
-	bool Llena();
 	bool InsComienzo(T valor);
 	bool EliComienzo(T &valor);
-	bool InsDerecho(Nodo<T> * p, T valor);
-	bool EliDerecho(Nodo<T> * p, T &valor);
+	bool InsDerecho(Nodo<T> *p, T valor);
+	bool EliDerecho(Nodo<T> *p, T &valor);
 
 };
 
@@ -59,20 +58,9 @@ bool Lista<T>::Vacia() {
 }
 
 template<class T>
-bool Lista<T>::Llena() {
-	Nodo<T> *p = new Nodo<T>;
-	if (p == NULL)
-		return true;
-	else {
-		delete p;
-		return false;
-	}
-}
-
-template<class T>
 bool Lista<T>::InsComienzo(T Valor) {
-	if (!Llena()) {
-		Nodo<T> * nuevo = new Nodo<T>;
+	Nodo<T> *nuevo = new Nodo<T>;
+	if (nuevo != NULL) {
 		nuevo->AsigInfo(Valor);
 		nuevo->AsigDer(primero);
 		primero = nuevo;
@@ -94,14 +82,15 @@ bool Lista<T>::EliComienzo(T &valor) {
 }
 
 template<class T>
-bool Lista<T>::InsDerecho(Nodo<T> * p, T valor) {
-	if (!Llena()) {
-		if (Vacia()) {
-			InsComienzo(valor);
+bool Lista<T>::InsDerecho(Nodo<T> *p, T valor) {
+	if (Vacia()) {
+		if (InsComienzo(valor)) {
 			p = ObtPrimero();
 			return true;
-		} else if (p != NULL) {
-			Nodo<T> * nuevo = new Nodo<T>;
+		}
+	} else if (p != NULL) {
+		Nodo<T> *nuevo = new Nodo<T>;
+		if (nuevo != NULL) {
 			nuevo->AsigInfo(valor);
 			nuevo->AsigDer(p->ObtDer());
 			p->AsigDer(nuevo);

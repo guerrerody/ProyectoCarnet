@@ -17,7 +17,7 @@ public:
 	virtual ~VEstado();
 
 	int menuEstado(); //Sub-menu para elegir una opcion (Incluir,buscar, modificar)
-	void imprimirListaEstados(MEstado &rol); //Reporte de la lista despues de incluir Estados
+	void imprimirListaEstados(MEstado &estado); //Reporte de la lista despues de incluir Estados
 	void imprimirEstado(InfoEstado infoEstado); //Imprimir los datos del nodo
 };
 

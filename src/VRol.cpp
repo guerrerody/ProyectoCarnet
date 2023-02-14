@@ -61,10 +61,6 @@ void VRol::imprimirListaRoles(MRol &rol) {
 			p = p->ObtDer();
 		}
 	}
-
-	ImprimirLineasBlanco(2);
-
-	Pausa();
 }
 
 void VRol::imprimirRol(InfoRol infoRol) {
@@ -74,16 +70,13 @@ void VRol::imprimirRol(InfoRol infoRol) {
 	ImprimirLineasBlanco(1);
 
 	ImprimirNro("CODIGO: ", infoRol.codigo);
-	ImprimirLineasBlanco(2);
+	ImprimirLineasBlanco(1);
 	ImprimirString("NOMBRE: ", infoRol.nombre);
-	ImprimirLineasBlanco(2);
+	ImprimirLineasBlanco(1);
 	ImprimirString("DESCRIPCION: ", infoRol.descripcion);
-	ImprimirLineasBlanco(2);
+	ImprimirLineasBlanco(1);
 	ImprimirNro("CANTIDAD CENSADOS: ", infoRol.cantCensados);
-	ImprimirLineasBlanco(2);
+	ImprimirLineasBlanco(1);
 	ImprimirNroDecimal("PRECIO DEL CARNET:  ", infoRol.precioCarnet);
-	ImprimirLineasBlanco(2);
-
-	Pausa();
-
+	ImprimirLineasBlanco(1);
 }

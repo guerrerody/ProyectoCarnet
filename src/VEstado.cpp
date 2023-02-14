@@ -18,8 +18,7 @@ VEstado::~VEstado() {
 int VEstado::menuEstado() {
 	Limpiar();
 
-	ImprimirEncabezado("\n      S U B - M E N U  E S T A D O ",
-			"      ==========================");
+	ImprimirEncabezado("\n      S U B - M E N U  E S T A D O ", "      ============================");
 	ImprimirLineasBlanco(1);
 	ImprimirMensaje(" [1] INCLUIR ESTADO\n");
 	ImprimirMensaje(" [2] CONSULTAR ESTADO\n");
@@ -30,14 +29,12 @@ int VEstado::menuEstado() {
 	return LeerValidarNro("  SELECCIONE SU OPCION : ", 1, 6);
 }
 
-void VEstado::imprimirListaEstados(MEstado &Estado) { // HAY QUE ESCOGER LA LISTA DE EstadoS DEPENDE DEL ROL
-	Limpiar();
-
-	ImprimirEncabezado("\n      LISTADO DE ESTADOS", "   ======================");
+void VEstado::imprimirListaEstados(MEstado &estados) { // HAY QUE ESCOGER LA LISTA DE ESTADOS DEPENDE DEL ROL
+	ImprimirEncabezado("\n      LISTADO DE ESTADOS", "     =====================");
 	ImprimirLineasBlanco(1);
 
-	if (Estado.Vacia()) {
-		ImprimirMensaje("\nNO SE ENCONTRARON ESTADOS REGISTRADAS\n");
+	if (estados.Vacia()) {
+		ImprimirMensaje("\nNO SE ENCONTRARON ESTADOS REGISTRADOS\n");
 	} else {
 
 		ImprimirStringJustificado("Código", 8);
@@ -46,7 +43,7 @@ void VEstado::imprimirListaEstados(MEstado &Estado) { // HAY QUE ESCOGER LA LIST
 
 		ImprimirLineasBlanco(2);
 
-		Nodo<InfoEstado> *p = Estado.ObtTope(); // HAY QUE APLICAR LA MARCA
+		Nodo<InfoEstado> *p = estados.ObtTope(); // HAY QUE APLICAR LA MARCA
 		while (p != NULL) {
 			InfoEstado info = p->ObtInfo();
 
@@ -58,24 +55,18 @@ void VEstado::imprimirListaEstados(MEstado &Estado) { // HAY QUE ESCOGER LA LIST
 			p = p->ObtDer();
 		}
 	}
-
-	ImprimirLineasBlanco(2);
-
-	Pausa();
 }
 
 void VEstado::imprimirEstado(InfoEstado infoEstado) {
 	Limpiar();
 
-	ImprimirEncabezado("      INFORMACION DE ESTADO", "   ================================");
+	ImprimirEncabezado("      INFORMACION DE ESTADO", "   ===========================");
 	ImprimirLineasBlanco(1);
 
 	ImprimirNro("CODIGO: ", infoEstado.codigo);
-	ImprimirLineasBlanco(2);
+	ImprimirLineasBlanco(1);
 	ImprimirString("NOMBRE: ", infoEstado.nombre);
-	ImprimirLineasBlanco(2);
+	ImprimirLineasBlanco(1);
 	ImprimirString("FECHA: ", infoEstado.fecha);
-	ImprimirLineasBlanco(2);
-
-	Pausa();
+	ImprimirLineasBlanco(1);
 }

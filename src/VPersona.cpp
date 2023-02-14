@@ -16,88 +16,90 @@ VPersona::~VPersona() {
 
 }
 
-int VPersona::menuPersona(){
+int VPersona::menuPersona() {
 	Limpiar();
 
-		ImprimirEncabezado("\n      S U B - M E N U P E R S O N  A S", "      ==========================");
-		ImprimirLineasBlanco(1);
-		ImprimirMensaje(" [1] INCLUIR PERSONA\n");
-		ImprimirMensaje(" [2] CONSULTAR PERSONA\n");
-		ImprimirMensaje(" [3] MODIFICAR PERSONA\n");
-		ImprimirMensaje(" [4] ELIMINAR PERSONA\n");
-		ImprimirMensaje(" [5] IMPRIMIR PERSONAS\n");
-		ImprimirMensaje(" [6] VOLVER AL MENU PRINCIPAL\n\n");
-		return LeerValidarNro("  SELECCIONE SU OPCION : ", 1, 6);
-
+	ImprimirEncabezado("\n      S U B - M E N U P E R S O N A S", "      ===============================");
+	ImprimirLineasBlanco(1);
+	ImprimirMensaje(" [1] INCLUIR PERSONA\n");
+	ImprimirMensaje(" [2] CONSULTAR PERSONA\n");
+	ImprimirMensaje(" [3] MODIFICAR PERSONA\n");
+	ImprimirMensaje(" [4] ELIMINAR PERSONA\n");
+	ImprimirMensaje(" [5] IMPRIMIR PERSONAS\n");
+	ImprimirMensaje(" [6] VOLVER AL MENU PRINCIPAL\n\n");
+	return LeerValidarNro("  SELECCIONE SU OPCION : ", 1, 6);
 }
-void VPersona::imprimirListaPersonas(MPersona &persona){ //
+
+void VPersona::imprimirListaPersonas(string rol, MPersona &personas) {
 	Limpiar();
 
-		ImprimirEncabezado("\n      LISTADO DE PERSONAS", "   ======================");
-		ImprimirLineasBlanco(1);
+	ImprimirEncabezado("      LISTADO DE PERSONAS", "     ======================");
+	ImprimirLineasBlanco(1);
 
-		if (persona.Vacia()) {
-			ImprimirMensaje("\nNO SE ENCONTRARON PERSONAS REGISTRADAS\n");
-		} else {
+	ImprimirString("Rol: ", rol);
+	ImprimirLineasBlanco(2);
 
-			ImprimirStringJustificado("Código", 8);
-			ImprimirStringJustificado("Cedula", 9);
-			ImprimirStringJustificado("Nombre", 20);
-			ImprimirStringJustificado("Apellido", 20);
-			ImprimirStringJustificado("Sexo", 8);
-			ImprimirStringJustificado("Tipo Persona", 8);
-			ImprimirStringJustificado("Correo", 20);
-			ImprimirStringJustificado("Decanato", 20);
-			ImprimirStringJustificado("Pila Estatus", 20);
+	if (personas.Vacia()) {
+		ImprimirMensaje("\nNO SE ENCONTRARON PERSONAS REGISTRADAS\n");
+	} else {
 
-			ImprimirLineasBlanco(2);
+		ImprimirStringJustificado("Cedula", 10);
+		ImprimirStringJustificado("Nombre", 20);
+		ImprimirStringJustificado("Apellido", 20);
+		ImprimirStringJustificado("Sexo (1=M 2=F)", 20);
+		ImprimirStringJustificado("Correo", 20);
+		ImprimirStringJustificado("Decanato", 20);
+		ImprimirStringJustificado("Estatus Carnet", 20);
 
-			Nodo<InfoPersona> *p = persona.ObtFrente();
-			while (p != NULL) {
-				InfoPersona info = p->ObtInfo();
+		ImprimirLineasBlanco(2);
 
-				ImprimirNroJustificado(info.codigo, 8);
+		InfoPersona marca;
+		personas.Insertar(marca);
+
+		bool finCola = false;
+		while (!finCola) {
+			InfoPersona info;
+			personas.Remover(info);
+			if (info.cedula.empty()) {
+				finCola = true;
+			} else {
+				ImprimirStringJustificado(info.cedula, 10);
 				ImprimirStringJustificado(info.nombre, 20);
 				ImprimirStringJustificado(info.apellido, 20);
-				ImprimirNroJustificado(info.sexo, 8);
-				ImprimirNroJustificado(info.tipoPersona, 8);
+				ImprimirNroJustificado(info.sexo, 20);
 				ImprimirStringJustificado(info.correo, 20);
 				ImprimirStringJustificado(info.decanato, 20);
-				ImprimirStringJustificado(info.pilaEstado.ObtTope()->ObtInfo().nombre, 20);
+				MEstado *estado = info.pilaEstado;
+				ImprimirStringJustificado(estado->Vacia() ? "<NINGUNO>" : estado->ObtTope()->ObtInfo().nombre, 20);
 				ImprimirLineasBlanco(1);
 
-				p = p->ObtDer();
+				personas.Insertar(info);
 			}
 		}
-
-		ImprimirLineasBlanco(2);
-
-		Pausa();
-
+	}
 }
-void VPersona::imprimirPersona(InfoPersona infoPersona){
+
+void VPersona::imprimirPersona(string rol, InfoPersona infoPersona) {
 	Limpiar();
 
-		ImprimirEncabezado("      INFORMACION DE LA PERSONA", "   ================================");
-		ImprimirLineasBlanco(1);
+	ImprimirEncabezado("      INFORMACION DE LA PERSONA", "   ===============================");
+	ImprimirLineasBlanco(1);
 
-		ImprimirNro("CODIGO: ", infoPersona.codigo);
-		ImprimirLineasBlanco(2);
-		ImprimirString("NOMBRE: ", infoPersona.nombre);
-		ImprimirLineasBlanco(2);
-		ImprimirString("APELLIDO: ", infoPersona.apellido);
-		ImprimirLineasBlanco(2);
-		ImprimirNro("SEXO: ", infoPersona.sexo);
-		ImprimirLineasBlanco(2);
-		ImprimirNro("TIPO DE PERSONA: ", infoPersona.tipoPersona);
-		ImprimirLineasBlanco(2);
-		ImprimirString("CORREO: ", infoPersona.correo);
-		ImprimirLineasBlanco(2);
-		ImprimirString("DECANATO: ", infoPersona.decanato);
-		ImprimirLineasBlanco(2);
-		ImprimirString("ESTATUS DE LA PILA: ", infoPersona.pilaEstado.ObtTope()->ObtInfo().nombre);
-		ImprimirLineasBlanco(2);
-
-		Pausa();
-
+	ImprimirString("ROL: ", rol);
+	ImprimirLineasBlanco(1);
+	ImprimirString("CEDULA: ", infoPersona.cedula);
+	ImprimirLineasBlanco(1);
+	ImprimirString("NOMBRE: ", infoPersona.nombre);
+	ImprimirLineasBlanco(1);
+	ImprimirString("APELLIDO: ", infoPersona.apellido);
+	ImprimirLineasBlanco(1);
+	ImprimirNro("SEXO (1=M 2=F): ", infoPersona.sexo);
+	ImprimirLineasBlanco(1);
+	ImprimirString("CORREO: ", infoPersona.correo);
+	ImprimirLineasBlanco(1);
+	ImprimirString("DECANATO: ", infoPersona.decanato);
+	ImprimirLineasBlanco(1);
+	MEstado *estado = infoPersona.pilaEstado;
+	ImprimirString("ESTATUS CARNET: ", estado->Vacia() ? "<NINGUNO>" : estado->ObtTope()->ObtInfo().nombre);
+	ImprimirLineasBlanco(1);
 }
